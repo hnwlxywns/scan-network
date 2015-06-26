@@ -38,13 +38,16 @@ class PingThread(Thread):
         self.Status = -1
 
     def run(self):
+        cmd="ping "+self.Adress+" -c 1"
         try:
-            get = subprocess.getoutput("ping "+self.Adress+" -c 1")
+            # get = subprocess.getoutput("ping "+self.Adress+" -c 1")
+            get = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE)
         except OSError:
             print("Cannot execute ping, propably you dont have enough permissions to create process")
             sys.exit(1)
 
-        Lines = get.split("\n")
+        #Lines = get.split("\n")
+        Lines = get.stdout.read().split("\n")
         ResponseTime = False
 
         for line in Lines:
@@ -164,7 +167,7 @@ def doRangeScan():
                     # Append it to list of pinged hosts
                     ListOfHosts.append(Ping)
                     Ping.start()
-                    
+
                 print("Adresses to scan: %1.0f" % (y-x))
                 print("Ping "+ip.replace('*', "{"+str(int(x))+"-"+str(int(y))+"}"))
                 print("Delay: "+str(ping_delay)+"s")
@@ -183,6 +186,6 @@ def doRangeScan():
             print("There was an running the scan, propably your resources are restricted. "+str(e))
             sys.exit(1)
 
-    
+
 if __name__ == "__main__":
     main()
