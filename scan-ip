@@ -1,0 +1,18 @@
+#!/bin/bash
+
+paramter_num="$#"
+if [[ ${paramter_num} -eq 1 ]]; then
+    from=1
+    end=254
+    ip="$1"
+elif [[ $# -eq 3 ]]; then
+    from="$1"
+    end="$2"
+    ip="$3"
+else
+    echo "Please input Paramters"
+    exit 1
+fi
+
+/home/ruijie/ruijie/python/scan-network/scan-network.py -f ${from} -t ${end} -i ${ip}
+
